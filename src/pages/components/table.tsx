@@ -1,12 +1,4 @@
-import {
-  Accessor,
-  createEffect,
-  createSignal,
-  For,
-  Index,
-  JSX,
-  Resource,
-} from "solid-js";
+import { createEffect, For, Index, JSX, Resource } from "solid-js";
 
 export type TableColumn<T> = {
   title: string;
@@ -37,36 +29,41 @@ export default function Table<T>({
           Добавить
         </button>
       </div>
-      <table class="table w-full table-zebra">
-        <thead>
-          <tr>
-            <Index each={columns}>{(col) => <th>{col().title}</th>}</Index>
-            <th class="text-center">Действия</th>
-          </tr>
-        </thead>
-        <tbody>
-          <For each={data()}>
-            {(item) => (
-              <tr>
-                <Index each={columns}>
-                  {(col) => <td>{col().render(item)}</td>}
-                </Index>
-                <td class="text-center">
-                  <button
-                    class="btn btn-primary mr-2"
-                    onClick={() => onEdit(item)}
-                  >
-                    Редактировать
-                  </button>
-                  <button class="btn btn-danger" onClick={() => onDelete(item)}>
-                    Удалить
-                  </button>
-                </td>
-              </tr>
-            )}
-          </For>
-        </tbody>
-      </table>
+      <div class="overflow-x-auto">
+        <table class="table w-full table-zebra">
+          <thead>
+            <tr>
+              <Index each={columns}>{(col) => <th>{col().title}</th>}</Index>
+              <th class="text-center">Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            <For each={data()}>
+              {(item) => (
+                <tr>
+                  <Index each={columns}>
+                    {(col) => <td>{col().render(item)}</td>}
+                  </Index>
+                  <td class="text-center">
+                    <button
+                      class="btn btn-primary mr-2"
+                      onClick={() => onEdit(item)}
+                    >
+                      Редактировать
+                    </button>
+                    <button
+                      class="btn btn-danger"
+                      onClick={() => onDelete(item)}
+                    >
+                      Удалить
+                    </button>
+                  </td>
+                </tr>
+              )}
+            </For>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

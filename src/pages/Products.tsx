@@ -49,8 +49,8 @@ export default function Products() {
   const handleSave = async (data: Product) => {
     try {
       if (data.product_id === 0) {
-        await db.createProduct(data);
-        setProducts((prev = []) => [...prev, data]);
+        const id = await db.createProduct(data);
+        setProducts((prev = []) => [...prev, {...data, product_id: id}]);
       } else {
         await db.saveProduct({
           ...data,

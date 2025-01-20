@@ -1,6 +1,5 @@
 import { createResource, createSignal, Show } from "solid-js";
 import Table, { TableColumn } from "./components/table";
-import Database from "@tauri-apps/plugin-sql";
 import createDatabase from "../app/database";
 import { Form } from "./components/editForm";
 import { Inventory } from "../app/types";
@@ -12,7 +11,7 @@ const productColumns: TableColumn<Inventory>[] = [
     render: (item) => item.inventory_id,
   },
   {
-    title: "ID продукта",
+    title: "ID Товара",
     field: "product_id",
     render: (item) => item.product_id,
   },
@@ -56,8 +55,8 @@ export default function InventoryPage() {
   const handleSave = async (data: Inventory) => {
     try {
       if (data.inventory_id === 0) {
-        await db.createInventory(data);
-        setInventory((prev = []) => [...prev, data]);
+        const id = await db.createInventory(data);
+        setInventory((prev = []) => [...prev, { ...data, inventory_id: id }]);
       } else {
         await db.saveInventory({
           ...data,

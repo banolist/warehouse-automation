@@ -1,8 +1,8 @@
 import { createResource, createSignal, Show } from "solid-js";
 import Table, { TableColumn } from "./components/table";
-import Database from "@tauri-apps/plugin-sql";
+
 import createDatabase from "../app/database";
-import { Product, User } from "../app/types";
+import { User } from "../app/types";
 import { Form } from "./components/editForm";
 
 const productColumns: TableColumn<User>[] = [
@@ -54,8 +54,8 @@ export default function Users() {
   const handleSave = async (user: User) => {
     try {
       if (user.user_id === 0) {
-        await db.createUser(user);
-        setUsers((prev = []) => [...prev, user]);
+        const id = await db.createUser(user);
+        setUsers((prev = []) => [...prev, {...user, user_id: id}]);
       } else {
         await db.saveUser({
           ...user,

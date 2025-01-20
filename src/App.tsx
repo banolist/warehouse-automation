@@ -7,11 +7,7 @@ function App() {
   createEffect(async () => {
     Database.load("sqlite:database.db");
   });
-  return (
-    <>
-      <Navigate href="/app/home" />
-    </>
-  );
+  return <Navigate href="/app/home" />;
 }
 
 export default App;

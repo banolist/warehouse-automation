@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "warehouse-automation",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.warehouse-automation.dev",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
@@ -29,6 +29,9 @@
     }
   },
   "bundle": {
+    "android": {
+      "minSdkVersion": 30
+    },
     "active": true,
     "targets": "all",
     "icon": [

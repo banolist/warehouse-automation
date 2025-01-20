@@ -1,4 +1,4 @@
-import { createSignal, For, Index } from "solid-js";
+import { createSignal, For } from "solid-js";
 
 export type FormField<T> = {
   label: string;
@@ -20,7 +20,7 @@ export function Form<T>({
   onSubmit,
   onCancel,
 }: FormProps<T>) {
-  let formRef: HTMLFormElement | null = null;
+  //   let formRef: HTMLFormElement | null = null;
   const [formValues, setFormValues] = createSignal<Partial<T>>(initialValues);
 
   const handleChange = (field: keyof T, value: any) => {
@@ -37,7 +37,7 @@ export function Form<T>({
 
   return (
     <form
-      ref={(el) => (formRef = el)}
+      //   ref={(el) => (formRef = el)}
       class="space-y-4 p-4"
       onSubmit={handleSubmit}
     >

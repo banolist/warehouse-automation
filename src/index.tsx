@@ -10,11 +10,17 @@ import Users from "./pages/Users";
 import InventoryPage from "./pages/Inventory";
 import Supplers from "./pages/Supplers";
 import Orders from "./pages/Orders";
+import Login from "./pages/Login";
+import AuthProvider from "./providers/auth";
 
 const App = lazy(() => import("./App"));
 
 const AppRoot = (props: any) => {
-  return <>{props.children}</>;
+  return (
+    <>
+      <AuthProvider>{props.children}</AuthProvider>
+    </>
+  );
 };
 
 const root = document.getElementById("root");
@@ -22,6 +28,7 @@ render(
   () => (
     <Router root={AppRoot}>
       <Route path="/">
+        <Route path="login" component={Login} />
         <Route path="" component={App} />
         <Route path="app" component={Layout}>
           <Route path="home" component={Home} />

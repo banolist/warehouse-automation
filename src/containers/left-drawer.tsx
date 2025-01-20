@@ -1,5 +1,13 @@
-import { JSX, Index } from "solid-js";
-import { homeModern } from "solid-heroicons/solid";
+import { Index } from "solid-js";
+import {
+  homeModern,
+  xMark,
+  userGroup,
+  user,
+  cube,
+  listBullet,
+  cubeTransparent,
+} from "solid-heroicons/solid";
 import { Icon } from "solid-heroicons";
 import { A } from "@solidjs/router";
 interface Route {
@@ -9,50 +17,62 @@ interface Route {
 }
 const routes: Route[] = [
   {
-    path: "/",
+    path: "/app/home",
     icon: homeModern,
     text: "Home",
   },
   {
     path: "/app/users",
-    icon: homeModern,
-    text: "Users",
+    icon: userGroup,
+    text: "Пользователи",
   },
   {
     path: "/app/suppliers",
-    icon: homeModern,
-    text: "Suppliers",
+    icon: user,
+    text: "Поставщики",
   },
   {
     path: "/app/products",
-    icon: homeModern,
-    text: "Products",
+    icon: cube,
+    text: "Товары",
   },
   {
     path: "/app/orders",
-    icon: homeModern,
-    text: "Orders",
+    icon: listBullet,
+    text: "Заказы",
   },
-  { path: "/app/inventory", icon: homeModern, text: "Inventory" },
+  { path: "/app/inventory", icon: cubeTransparent, text: "Склад" },
 ];
 
 const LeftDrawer = (props: any) => {
+  const close = () => {
+    document.getElementById("my-drawer")?.click();
+  };
   return (
-    <div class="drawer">
+    <div class="drawer lg:drawer-open">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content">{props.children}</div>
-      <div class="drawer-side">
+      <div id="content" class="drawer-content flex flex-col">
+        {props.children}
+      </div>
+      <div class="drawer-side z-30">
         <label
           for="my-drawer"
           aria-label="close sidebar"
           class="drawer-overlay"
         ></label>
-        <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+        <div class="navbar text-xl font-semibold">Складские запасы</div>
+        <ul class="menu bg-base-100 text-base-content min-h-full w-80 p-4 overflow-y-auto">
+          <button
+            class="btn btn-ghost bg-base-300  btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute lg:hidden"
+            onClick={close}
+          >
+            <Icon path={xMark} class="w-5 h-5 inline-block" />
+          </button>
           <Index each={routes}>
             {(route, _) => (
               <li>
                 <A href={route().path}>
-                  <Icon path={route().icon} class="w-6 h-6" />{" "}
+                  <Icon path={route().icon} class="w-6 h-6" />
                   <span>{route().text}</span>
                 </A>
               </li>

@@ -43,7 +43,6 @@ export default function Supplers() {
   const [editingProduct, setEditingProduct] = createSignal<Supplier | null>(
     null
   );
-  const [suppliers] = createResource(db.fetchSuppliers);
   const handleAdd = async () => {
     setEditingProduct({
       supplier_id: 0,
@@ -60,8 +59,8 @@ export default function Supplers() {
   const handleSave = async (data: Supplier) => {
     try {
       if (data.supplier_id === 0) {
-        await db.createSupplier(data);
-        setProducts((prev = []) => [...prev, data]);
+        const id = await db.createSupplier(data);
+        setProducts((prev = []) => [...prev, { ...data, supplier_id: id }]);
       } else {
         await db.saveSupplier({
           ...data,

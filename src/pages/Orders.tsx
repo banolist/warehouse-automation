@@ -42,6 +42,7 @@ export default function Orders() {
   const db = createDatabase();
   const [orders, { mutate: setOrders }] = createResource(db.fetchOrders);
   const [editingOrder, setEditingOrder] = createSignal<Order | null>(null);
+  const [products] = createResource(db.fetchProducts);
 
   const handleAdd = async () => {
     setEditingOrder({
@@ -60,8 +61,8 @@ export default function Orders() {
   const handleSave = async (data: Order) => {
     try {
       if (data.order_id === 0) {
-        await db.createOrder(data);
-        setOrders((prev = []) => [...prev, data]);
+        const id = await db.createOrder(data);
+        setOrders((prev = []) => [...prev, {...data, order_id: id}]);
       } else {
         await db.saveOrder({
           ...data,
@@ -88,7 +89,7 @@ export default function Orders() {
 
   const handleDelete = async (data: Order) => {
     try {
-      await db.deleteInventory(data.order_id);
+      await db.deleteOrder(data.order_id);
       setOrders(orders()?.filter((p) => p.order_id !== data.order_id));
     } catch (error) {
       console.error(error);
@@ -134,7 +135,11 @@ export default function Orders() {
             {
               field: "product_id",
               label: "Product ID",
-              type: "number",
+              type: "select",
+              options: products()?.map((p) => ({
+                value: p.product_id,
+                label: p.product_name,
+              })),
             },
             {
               field: "quantity",

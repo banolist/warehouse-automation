@@ -7,6 +7,7 @@ interface DatabaseAPI {
   deleteUser: (userId: number) => Promise<void>;
   saveUser: (user: User) => Promise<void>;
   createUser: (user: User) => Promise<number>;
+  getUserByLogin: (login: string) => Promise<User | undefined>;
   fetchSuppliers: FetchFunction<Supplier>;
   createSupplier: (supplier: Supplier) => Promise<number>;
   saveSupplier: (supplier: Supplier) => Promise<void>;
@@ -38,6 +39,13 @@ export default function createDatabase(): DatabaseAPI {
         [user.username, user.password, user.role]
       );
       return result.lastInsertId!;
+    },
+    getUserByLogin: async (login: string) => {
+      const result = await db.select<User[]>(
+        "SELECT * from users WHERE username = ?",
+        [login]
+      );
+      return result.at(0);
     },
     deleteUser: async (userId: number) => {
       await db.execute("DELETE FROM users WHERE user_id = ?", [userId]);
